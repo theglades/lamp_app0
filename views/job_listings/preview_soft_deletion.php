@@ -8,10 +8,10 @@
     <div class="container">
       <h1>Job-Listings</h1>
 
-      <form>
+      <form class="form-group" action="/job_listings/preview_soft_deletion/{$job_listings->id}" method="POST">
         <div class="form-group">
           <label for="">Type "YES" to confirm the deletion of this category. Due note, that this operation can be reversed within 3 months. After the 3 month window has elapsed, the category will be permanently deleted.</label>
-          <input type="text" class="form-control" id="confirm_soft_deletion_of_category" placeholder="NO">
+          <input type="text" class="form-control" id="confirm_soft_deletion_of_comment" placeholder="NO">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>

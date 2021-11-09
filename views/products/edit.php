@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Products</h1>
 
-      <form>
+      <form action="/products/edit/{$product->id}" method="POST">
         <div class="form-group">
           <label for="product_name">Name</label>
           <input type="text" class="form-control" id="create_product_name" placeholder="Enter product name">

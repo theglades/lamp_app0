@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Rentals</h1>
 
-      <form>
+      <form class="form-group" action="/rentals/preview_soft_deletion/{$rental->id}" method="POST">
         <div class="form-group">
           <label for="">Type "YES" to confirm the deletion of this rental. Due note, that this operation can be reversed within 3 months. After the 3 month window has elapsed, the category will be permanently deleted.</label>
           <input type="text" class="form-control" id="confirm_soft_deletion_of_rental" placeholder="NO">

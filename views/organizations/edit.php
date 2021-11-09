@@ -9,7 +9,7 @@
     <div class="container">
       <h1>Organization</h1>
 
-      <form>
+      <form action="/organizations/edit/{$organization->id}" method="POST">
         <div class="form-group">
           <label for="organization_name">Name</label>
           <input type="text" class="form-control" id="organization_name" placeholder="Enter organization name">

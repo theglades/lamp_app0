@@ -7,7 +7,12 @@ class ProjectController
   }
 
   public function index() {
+    $db = new DB($dbname, $user, $password);
 
+    $stmt = $db->run("SELECT * FROM projects");
+    $data = $stmt->fetchAll();
+
+    return $data;
   }
 
   public function create() {

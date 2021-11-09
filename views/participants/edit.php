@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Edit Participant</h1>
 
-      <form>
+      <form action="/participants/edit/{$participant->id}" method="POST">
         <div class="form-group">
           <label for="">First Name</label>
           <input type="text" class="form-control" id="edit_participant_first_name" placeholder="Enter First Name">

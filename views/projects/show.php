@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Projects</h1>
 
-      <form>
+      <div>
         <div class="form-group">
           <label for="">Name</label>
           <h4><?php $project->name ?></h4>
@@ -20,7 +20,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </div>
     </div>
 
     <?php include("templates/footer.php"); ?>

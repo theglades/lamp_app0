@@ -7,7 +7,12 @@ class OrganizationController
   }
 
   public function index() {
+    $db = new DB($dbname, $user, $password);
 
+    $stmt = $db->run("SELECT * FROM organizations");
+    $data = $stmt->fetchAll();
+
+    return $data;
   }
 
   public function create() {

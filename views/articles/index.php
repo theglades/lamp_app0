@@ -1,3 +1,9 @@
+<?php
+  include("../../controllers/ArticleController");
+
+  $article_controller = new ArticleController();
+  $articles = $article_controller->index();
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>

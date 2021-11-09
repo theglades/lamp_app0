@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Locations</h1>
 
-      <form>
+      <div>
         <div class="form-group">
           <label for="">Name</label>
           <h4><?php $location->name ?></h4>
@@ -19,8 +19,7 @@
             <?php $location->description ?>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </div>
     </div>
 
     <?php include("templates/footer.php"); ?>

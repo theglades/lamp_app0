@@ -7,7 +7,12 @@ class JobListingController
   }
 
   public function index() {
+    $db = new DB($dbname, $user, $password);
 
+    $stmt = $db->run("SELECT * FROM job_listings");
+    $data = $stmt->fetchAll();
+
+    return $data;
   }
 
   public function create() {

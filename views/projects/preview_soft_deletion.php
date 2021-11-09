@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Projects</h1>
 
-      <form>
+      <form class="form-group" action="/projects/preview_soft_deletion/{$project->id}" method="POST">
         <div class="form-group">
           <label for="">Type "YES" to confirm the deletion of this project. Due note, that this operation can be reversed within 3 months. After the 3 month window has elapsed, the category will be permanently deleted.</label>
           <input type="text" class="form-control" id="confirm_soft_deletion_of_project" placeholder="NO">

@@ -7,7 +7,12 @@ class CategoryController
     }
 
     public function index() {
+      $db = new DB($dbname, $user, $password);
 
+      $stmt = $db->run("SELECT * FROM categories");
+      $data = $stmt->fetchAll();
+
+      return $data;
     }
 
     public function create() {
@@ -43,6 +48,6 @@ class CategoryController
     }
 
     public function confirm_soft_deletion() {
-      
+
     }
 }

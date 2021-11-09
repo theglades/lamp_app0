@@ -7,7 +7,12 @@ class ProductController
   }
 
   public function index() {
+    $db = new DB($dbname, $user, $password);
 
+    $stmt = $db->run("SELECT * FROM products");
+    $data = $stmt->fetchAll();
+
+    return $data;
   }
 
   public function create() {

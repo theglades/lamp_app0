@@ -8,14 +8,14 @@
     <div class="container">
       <h1>Services</h1>
 
-      <form>
+      <form action="/services/edit/{$services->id}" method="POST">
         <div class="form-group">
           <label for="service_name">Name</label>
-          <input type="text" class="form-control" id="create_service_name" placeholder="Enter service name">
+          <input type="text" class="form-control" id="edit_service_name" placeholder="Enter service name">
         </div>
         <div class="form-group">
           <label for="service_description">Description</label>
-          <textarea class="form-control" id="create_service_description" rows="3"></textarea>
+          <textarea class="form-control" id="edit_service_description" rows="3"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
