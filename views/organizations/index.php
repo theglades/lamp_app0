@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Organizations</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <h1>Organizations</h1>

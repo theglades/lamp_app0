@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Edit Rental</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <div class="container">

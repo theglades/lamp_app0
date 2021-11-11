@@ -9,6 +9,8 @@
   <head>
     <meta charset="utf-8">
     <title>Articles</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <h1>Articles</h1>
@@ -29,6 +31,5 @@
     </table>
 
     <?php include("templates/footer.php"); ?>
-
   </body>
 </html>

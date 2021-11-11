@@ -6,10 +6,11 @@ class ProjectController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM projects");
+    $stmt = $pdo->query("SELECT * FROM projects");
     $data = $stmt->fetchAll();
 
     return $data;

@@ -6,10 +6,11 @@ class RentalController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM rentals");
+    $stmt = $pdo->query("SELECT * FROM rentals");
     $data = $stmt->fetchAll();
 
     return $data;

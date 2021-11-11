@@ -2,7 +2,9 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Create Participant</title>
+    <title>Show Participant</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <div class="container">

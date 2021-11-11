@@ -6,10 +6,11 @@ class ParticipantController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM participants");
+    $stmt = $pdo->query("SELECT * FROM participants");
     $data = $stmt->fetchAll();
 
     return $data;

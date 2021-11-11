@@ -8,7 +8,7 @@ class ArticleController
 
   }
 
-  public function index()
+  public function index() 
   {
     $db = new DB($dbname, $user, $password);
 
@@ -68,8 +68,20 @@ class ArticleController
     }
   }
 
-  public function delete() {
+  public function delete() :Void
+  {
+    $db = new DB($dbname, $user, $password);
 
+    try {
+      $sql = "DELETE FROM articles WHERE id=?";
+      $stmt= $pdo->prepare($sql);
+      $stmt->execute([$posted_vars["id"]]);
+      return true;
+    } catch(Exception $e) {
+      echo 'Message: ' .$e->getMessage();
+
+      return false;
+    }
   }
 
   public function destroy() {
@@ -77,9 +89,7 @@ class ArticleController
   }
 
   public function preview_soft_deletion() {
-    $sql = "DELETE FROM articles WHERE id=?";
-    $stmt= $pdo->prepare($sql);
-    $stmt->execute([$posted_vars["id"]]);
+
   }
 
   public function confirm_soft_deletion() {

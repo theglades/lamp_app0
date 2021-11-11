@@ -6,10 +6,11 @@ class ServiceController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM services");
+    $stmt = $pdo->query("SELECT * FROM services");
     $data = $stmt->fetchAll();
 
     return $data;

@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Home</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <h1>Buy, Sell, Trade, Hire, Advertise and Connect With Companies/Organizations and People - All In One Place</h1>
@@ -24,6 +26,5 @@
     </table>
 
     <?php include("templates/footer.php"); ?>
-
   </body>
 </html>

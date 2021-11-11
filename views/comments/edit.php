@@ -5,6 +5,8 @@
   <head>
     <meta charset="utf-8">
     <title>Edit Comment</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <div class="container">
@@ -20,6 +22,5 @@
     </div>
 
     <?php include("templates/footer.php"); ?>
-
   </body>
 </html>

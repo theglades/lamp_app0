@@ -6,10 +6,11 @@ class LocationController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM locations");
+    $stmt = $pdo->query("SELECT * FROM locations");
     $data = $stmt->fetchAll();
 
     return $data;

@@ -1,34 +1,245 @@
+<?php
+error_reporting(E_ALL);
+
+//You can also report all errors by using -1
+error_reporting(-1);
+
+//If you are feeling old school
+ini_set('error_reporting', E_ALL);
+?>
+<?php
+  require('../databases/mysql_connection.php');
+
+  //die();
+
+  // try {
+  //   $pdo = new \PDO("sqlite:" . "../databases/database.db");
+  // } catch {
+  //   echo "Fatal Error."
+  // }
+
+?>
+<?php
+  $stmt = $pdo->query("SELECT * FROM participants");
+  $participants = $stmt->fetchAll();
+
+  // echo "<pre>";
+  // var_dump($participants);
+  // echo "</pre>";
+?>
+
+<?php
+  if($_GET["request"] == "post_created_participant"){
+?>
+  <?php
+
+  $request = $_POST;
+
+  try {
+    $sql = "INSERT INTO participants (first_name, last_name, email_address, phone_number, username, biography) VALUES (?,?,?,?,?,?)";
+    $stmt= $pdo->prepare($sql);
+    $stmt->execute([$request["first_name"], $request["last_name"], $request["email_address"], $request["phone_number"], $request["username"], $request["biography"]]);
+
+    //return true;
+    print_r("Participants table entry entered successfully");
+  //  die();
+  } catch(Exception $e) {
+    print_r('Message: ' .$e->getMessage());
+
+    //return false;
+    print_r("Failed to enter participants table successfully");
+  //  die();
+  }
+
+  header("Location: participants.php");
+  die();
+  ?>
+
+<?php
+  die();
+}
+?>
+
+<?php
+  if($_GET["request"] == "create_participant"){
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>People</title>
+    <title>Create Participant</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
-    <h1>People</h1>
+    <div class="container">
+      <br>
+      <h1>Create Participant</h1>
+      <br>
 
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Email-Address</th>
-        <th>Phone-Number</th>
-        <th>Username</th>
-      </tr>
-      <?php foreach($participants as $participant){ ?>
-        <tr>
-          <td><?php $participant->id ?></td>
-          <td><?php $participant->last_name ?></td>
-          <td><?php $participant->first_name ?></td>
-          <td><?php $participant->email_address ?></td>
-          <td><?php $participant->phone_number ?></td>
-          <td><?php $participant->username ?></td>
-        </tr>
-      <?php } ?>
-    </table>
+      <form action="participants.php?request=post_created_participant" method="POST">
+        <div class="form-group">
+          <label for="">First Name</label>
+          <input type="text" class="form-control" id="create_participant_first_name" name="first_name" placeholder="Enter First Name">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Last Name</label>
+          <input type="text" class="form-control" id="create_participant_last_name" name="last_name" placeholder="Enter Last Name">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Email-Address</label>
+          <input type="text" class="form-control" id="create_participant_email_address" name="email_address" placeholder="Enter Email-Address">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Phone-Number</label>
+          <input type="text" class="form-control" id="create_participant_phone_number" name="phone_number" placeholder="Enter Phone-Number">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Username</label>
+          <input type="text" class="form-control" id="create_participant_username" name="username" placeholder="Enter Username">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="create_participant_biography">Biography</label>
+          <textarea class="form-control" id="create_participant_biography" name="biography"  rows="3"></textarea>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
 
     <?php include("templates/footer.php"); ?>
 
   </body>
 </html>
+<?php
+  die();
+}
+?>
+
+<?php
+  if($_GET["render"] == "json"){
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json; charset=utf-8');
+    http_response_code(200);
+    echo json_encode($participants);
+    die();
+?>
+<?php
+} else {
+?>
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Participants</title>
+    <?php include("templates/header_assets.php"); ?>
+
+  </head>
+  <body>
+    <div class="container">
+
+      <br>
+
+      <h1>Participants</h1>
+
+      <br>
+
+
+        <?php
+          if(($_GET["format"] == "table") || (($_GET["format"] == ""))){
+        ?>
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email-Address</th>
+            <th>Phone-Number</th>
+            <th>Username</th>
+          </tr>
+        <?php if($participants != NULL){ ?>
+          <?php foreach($participants as $participant){ ?>
+            <?php
+            // echo "<pre>";
+            // var_dump($participants);
+            // echo "</pre>";
+            ?>
+
+            <tr>
+              <td><a href='?render=static&id={$participant["id"]}'><?php print($participant["id"]) ?></a></td>
+              <td><?php print($participant["last_name"]) ?></td>
+              <td><?php print($participant["first_name"]) ?></td>
+              <td><?php print($participant["email_address"]) ?></td>
+              <td><?php print($participant["phone_number"]) ?></td>
+              <td><?php print($participant["username"]) ?></td>
+            </tr>
+          <?php } ?>
+          <?php } else { ?>
+            <tr>
+              <td>Nothing to see here.</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+        <?php } ?>
+      </table>
+
+        <?php
+        } else if($_GET["format"] == "cards") {
+        ?>
+
+        <div class="row">
+        <?php if($participants != NULL){ ?>
+          <?php foreach($participants as $participant){ ?>
+            <?php
+            // echo "<pre>";
+            // var_dump($participants);
+            // echo "</pre>";
+            ?>
+
+            <div class="col-12 col-md-4" style="float:left;padding:1rem;">
+                <div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="..." alt="Card image cap">
+                  <div class="card-body">
+                    <p class="card-text"><em><?php print($participant["first_name"]) ?> <?php print($participant["last_name"]) ?></em></p>
+                    <p class="card-text"><?php print($participant["username"]) ?></p>
+                  </div>
+                </div>
+            </div>
+
+
+
+          <?php } ?>
+
+          <?php } else { ?>
+            <div class="">
+              Nothing to see here.
+            </div>
+        <?php } ?>
+
+        <?php
+        }
+        ?>
+      </div>
+
+      <br><br>
+
+      <?php include("templates/footer.php"); ?>
+
+    </div>
+
+
+  </body>
+</html>
+
+<?php
+}
+?>

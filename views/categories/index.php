@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Categories</title>
+    <?php include("templates/header_assets.php"); ?>
+
   </head>
   <body>
     <h1>Categories</h1>
@@ -23,6 +25,5 @@
     </table>
 
     <?php include("templates/footer.php"); ?>
-
   </body>
 </html>

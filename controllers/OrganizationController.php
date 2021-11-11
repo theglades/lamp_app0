@@ -6,10 +6,11 @@ class OrganizationController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM organizations");
+    $stmt = $pdo->query("SELECT * FROM organizations");
     $data = $stmt->fetchAll();
 
     return $data;

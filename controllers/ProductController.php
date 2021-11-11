@@ -6,10 +6,11 @@ class ProductController
 
   }
 
-  public function index() {
+  public function index()
+  {
     $db = new DB($dbname, $user, $password);
 
-    $stmt = $db->run("SELECT * FROM products");
+    $stmt = $pdo->query("SELECT * FROM products");
     $data = $stmt->fetchAll();
 
     return $data;
