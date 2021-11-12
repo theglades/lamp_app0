@@ -8,7 +8,7 @@ error_reporting(-1);
 ini_set('error_reporting', E_ALL);
 ?>
 <?php
-  require('../databases/mysql_connection.php');
+  require($_SERVER['DOCUMENT_ROOT'].'/databases/mysql_connection.php');
 
   //die();
 
@@ -18,6 +18,110 @@ ini_set('error_reporting', E_ALL);
   //   echo "Fatal Error."
   // }
 
+?>
+<?php
+  if($_GET["request"] == "edit_participant"){
+    $id = $_GET["participant_id"]
+    $request = $_POST
+
+    try {
+      $sql = $pdo->query("SELECT * FROM participants WHERE id=?");
+      $stmt= $pdo->prepare($sql);
+      $stmt->execute([$request["participant_id"]]);
+
+      //return true;
+      //print_r("Participants table entry entered successfully");
+    //  die();
+    } catch(Exception $e) {
+      print_r('Message: ' .$e->getMessage());
+
+      //return false;
+      print_r("Failed to enter participants table successfully");
+    //  die();
+    }
+
+    //header("Location: participants.php");
+    //die();
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Participant</title>
+    <?php include("templates/header_assets.php"); ?>
+
+  </head>
+  <body>
+    <div class="container">
+      <br>
+      <h1>Edit Participant</h1>
+      <br>
+
+      <form action="participants.php?request=update_edited_participant" method="POST">
+        <div class="form-group">
+          <label for="">First Name</label>
+          <input type="text" class="form-control" id="edit_participant_first_name" name="first_name" placeholder="Enter First Name">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Last Name</label>
+          <input type="text" class="form-control" id="edit_participant_last_name" name="last_name" placeholder="Enter Last Name">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Email-Address</label>
+          <input type="text" class="form-control" id="edit_participant_email_address" name="email_address" placeholder="Enter Email-Address">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Phone-Number</label>
+          <input type="text" class="form-control" id="edit_participant_phone_number" name="phone_number" placeholder="Enter Phone-Number">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Username</label>
+          <input type="text" class="form-control" id="edit_participant_username" name="username" placeholder="Enter Username" value="">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="create_participant_biography">Biography</label>
+          <textarea class="form-control" id="create_participant_biography" name="biography"  rows="3"></textarea>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <?php include("templates/footer.php"); ?>
+
+  </body>
+</html>
+<?php
+}
+?>
+<?php
+  if($_GET["request"] == "update_edited_participant"){
+    $id = $_GET["participant_id"]
+    $request = $_POST
+
+    try {
+      $sql = "UPDATE participants SET first_name=?, last_name=?, email_address=?, phone_number=?, username=?, biography=? WHERE id=?";
+      $stmt= $pdo->prepare($sql);
+      $stmt->execute([$request["first_name"], $request["last_name"], $request["email_address"], $request["phone_number"], $request["username"], $request["biography"], $request["participant_id"]]);
+
+      //return true;
+      print_r("Participants table entry entered successfully");
+    //  die();
+    } catch(Exception $e) {
+      print_r('Message: ' .$e->getMessage());
+
+      //return false;
+      print_r("Failed to enter participants table successfully");
+    //  die();
+    }
+
+    header("Location: participants.php");
+    die();
 ?>
 <?php
   $stmt = $pdo->query("SELECT * FROM participants");
