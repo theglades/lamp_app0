@@ -6,6 +6,7 @@ error_reporting(-1);
 
 //If you are feeling old school
 ini_set('error_reporting', E_ALL);
+
 ?>
 <?php
   require($_SERVER['DOCUMENT_ROOT'].'/databases/mysql_connection.php');
@@ -20,25 +21,53 @@ ini_set('error_reporting', E_ALL);
 
 ?>
 <?php
-  if($_GET["request"] == "edit_participant"){
-    $id = $_GET["participant_id"]
-    $request = $_POST
+  if($_GET["request"] == "update_edited_participant"){
+    //$id = $_GET["participant_id"]
+    $request = $_POST;
 
     try {
-      $sql = $pdo->query("SELECT * FROM participants WHERE id=?");
+      $sql = "UPDATE participants SET first_name=?, last_name=?, email_address=?, phone_number=?, username=?, biography=? WHERE id=?";
       $stmt= $pdo->prepare($sql);
-      $stmt->execute([$request["participant_id"]]);
+      $stmt->execute([$request["first_name"], $request["last_name"], $request["email_address"], $request["phone_number"], $request["username"], $request["biography"], $request["participant_id"]]);
 
       //return true;
-      //print_r("Participants table entry entered successfully");
+      print_r("Participants table entry updated successfully");
     //  die();
     } catch(Exception $e) {
       print_r('Message: ' .$e->getMessage());
 
       //return false;
-      print_r("Failed to enter participants table successfully");
+      print_r("Failed to update participants table successfully");
     //  die();
     }
+
+    header("Location: participants.php?request=show_participant&participant_id=".$request['participant_id']);
+    die();
+  }
+?>
+<?php
+  if(($_GET["request"] == "edit_participant") && ($_GET['participant_id'] != NULL)){
+    $id = $_GET["participant_id"];
+
+    try {
+      // $stmt = $pdo->query("SELECT * FROM participants");
+      // $participants = $stmt->fetchAll();
+      $sql = "SELECT * FROM participants WHERE id=:id";
+      $stmt= $pdo->prepare($sql);
+      $stmt->execute(['id' => $id]);
+      $participant = $stmt->fetch();
+
+      //return true;
+      print_r("Participants table select entered successfully");
+    //  die();
+    } catch(Exception $e) {
+      print_r('Message: ' .$e->getMessage());
+
+      //return false;
+      print_r("Failed to select participants table successfully");
+    //  die();
+    }
+
 
     //header("Location: participants.php");
     //die();
@@ -58,34 +87,35 @@ ini_set('error_reporting', E_ALL);
       <br>
 
       <form action="participants.php?request=update_edited_participant" method="POST">
+        <input type="hidden" class="" id="edit_participant_id" name="participant_id" value="<?php print($participant["id"]) ?>">
         <div class="form-group">
           <label for="">First Name</label>
-          <input type="text" class="form-control" id="edit_participant_first_name" name="first_name" placeholder="Enter First Name">
+          <input type="text" class="form-control" id="edit_participant_first_name" name="first_name" value="<?php print($participant["first_name"]) ?>">
         </div>
         <br>
         <div class="form-group">
           <label for="">Last Name</label>
-          <input type="text" class="form-control" id="edit_participant_last_name" name="last_name" placeholder="Enter Last Name">
+          <input type="text" class="form-control" id="edit_participant_last_name" name="last_name" value="<?php print($participant["last_name"]) ?>">
         </div>
         <br>
         <div class="form-group">
           <label for="">Email-Address</label>
-          <input type="text" class="form-control" id="edit_participant_email_address" name="email_address" placeholder="Enter Email-Address">
+          <input type="text" class="form-control" id="edit_participant_email_address" name="email_address" value="<?php print($participant["email_address"]) ?>">
         </div>
         <br>
         <div class="form-group">
           <label for="">Phone-Number</label>
-          <input type="text" class="form-control" id="edit_participant_phone_number" name="phone_number" placeholder="Enter Phone-Number">
+          <input type="text" class="form-control" id="edit_participant_phone_number" name="phone_number" value="<?php print($participant["phone_number"]) ?>">
         </div>
         <br>
         <div class="form-group">
           <label for="">Username</label>
-          <input type="text" class="form-control" id="edit_participant_username" name="username" placeholder="Enter Username" value="">
+          <input type="text" class="form-control" id="edit_participant_username" name="username" placeholder="Enter Username" value="<?php print($participant["username"]) ?>">
         </div>
         <br>
         <div class="form-group">
           <label for="create_participant_biography">Biography</label>
-          <textarea class="form-control" id="create_participant_biography" name="biography"  rows="3"></textarea>
+          <textarea class="form-control" id="create_participant_biography" name="biography"  rows="3"><?php print($participant["biography"]) ?></textarea>
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -97,134 +127,27 @@ ini_set('error_reporting', E_ALL);
   </body>
 </html>
 <?php
+} else if(($_GET["request"] == "edit_participant") && ($_GET['participant_id'] == NULL)) {
+  header("Location: participants.php?request=index_of_participants");
+  die();
 }
+
 ?>
 <?php
-  if($_GET["request"] == "update_edited_participant"){
-    $id = $_GET["participant_id"]
-    $request = $_POST
-
-    try {
-      $sql = "UPDATE participants SET first_name=?, last_name=?, email_address=?, phone_number=?, username=?, biography=? WHERE id=?";
-      $stmt= $pdo->prepare($sql);
-      $stmt->execute([$request["first_name"], $request["last_name"], $request["email_address"], $request["phone_number"], $request["username"], $request["biography"], $request["participant_id"]]);
-
-      //return true;
-      print_r("Participants table entry entered successfully");
-    //  die();
-    } catch(Exception $e) {
-      print_r('Message: ' .$e->getMessage());
-
-      //return false;
-      print_r("Failed to enter participants table successfully");
-    //  die();
-    }
-
-    header("Location: participants.php");
-    die();
-?>
-<?php
-  $stmt = $pdo->query("SELECT * FROM participants");
-  $participants = $stmt->fetchAll();
-
-  // echo "<pre>";
-  // var_dump($participants);
-  // echo "</pre>";
-?>
-
-<?php
-  if($_GET["request"] == "post_created_participant"){
-?>
-  <?php
-
-  $request = $_POST;
+  if($_GET["request"] == "index_of_participants") {
 
   try {
-    $sql = "INSERT INTO participants (first_name, last_name, email_address, phone_number, username, biography) VALUES (?,?,?,?,?,?)";
-    $stmt= $pdo->prepare($sql);
-    $stmt->execute([$request["first_name"], $request["last_name"], $request["email_address"], $request["phone_number"], $request["username"], $request["biography"]]);
-
-    //return true;
-    print_r("Participants table entry entered successfully");
-  //  die();
-  } catch(Exception $e) {
+      $stmt = $pdo->query("SELECT * FROM participants");
+      $participants = $stmt->fetchAll();
+  } catch (Exception $e) {
     print_r('Message: ' .$e->getMessage());
 
     //return false;
     print_r("Failed to enter participants table successfully");
-  //  die();
+    //  die();
   }
 
-  header("Location: participants.php");
-  die();
-  ?>
-
-<?php
-  die();
-}
 ?>
-
-<?php
-  if($_GET["request"] == "create_participant"){
-?>
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Create Participant</title>
-    <?php include("templates/header_assets.php"); ?>
-
-  </head>
-  <body>
-    <div class="container">
-      <br>
-      <h1>Create Participant</h1>
-      <br>
-
-      <form action="participants.php?request=post_created_participant" method="POST">
-        <div class="form-group">
-          <label for="">First Name</label>
-          <input type="text" class="form-control" id="create_participant_first_name" name="first_name" placeholder="Enter First Name">
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="">Last Name</label>
-          <input type="text" class="form-control" id="create_participant_last_name" name="last_name" placeholder="Enter Last Name">
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="">Email-Address</label>
-          <input type="text" class="form-control" id="create_participant_email_address" name="email_address" placeholder="Enter Email-Address">
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="">Phone-Number</label>
-          <input type="text" class="form-control" id="create_participant_phone_number" name="phone_number" placeholder="Enter Phone-Number">
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="">Username</label>
-          <input type="text" class="form-control" id="create_participant_username" name="username" placeholder="Enter Username">
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="create_participant_biography">Biography</label>
-          <textarea class="form-control" id="create_participant_biography" name="biography"  rows="3"></textarea>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-
-    <?php include("templates/footer.php"); ?>
-
-  </body>
-</html>
-<?php
-  die();
-}
-?>
-
 <?php
   if($_GET["render"] == "json"){
     header('Access-Control-Allow-Origin: *');
@@ -276,7 +199,7 @@ ini_set('error_reporting', E_ALL);
             ?>
 
             <tr>
-              <td><a href='?render=static&id={$participant["id"]}'><?php print($participant["id"]) ?></a></td>
+              <td><a href="?render=static&request=show_participant&participant_id=<?php print($participant["id"]) ?>"><?php print($participant["id"]) ?></a></td>
               <td><?php print($participant["last_name"]) ?></td>
               <td><?php print($participant["first_name"]) ?></td>
               <td><?php print($participant["email_address"]) ?></td>
@@ -343,7 +266,110 @@ ini_set('error_reporting', E_ALL);
 
   </body>
 </html>
+<?php
+}
+?>
 
+<?php
+  die();
+}
+
+?>
+<?php
+  if(($_GET["request"] == "show_participant") && ($_GET["participant_id"] != NULL)){
+    $id = $_GET["participant_id"];
+
+    // echo "<pre>";
+    // var_dump($id);
+    // echo "</pre>";
+    // die();
+    //die("here we are");
+
+    try {
+      // $stmt = $pdo->query("SELECT * FROM participants");
+      // $participants = $stmt->fetchAll();
+      $sql = "SELECT * FROM participants WHERE id=:id";
+      $stmt= $pdo->prepare($sql);
+      $stmt->execute(['id' => $id]);
+      $participant = $stmt->fetch();
+
+      //return true;
+      print_r("Participants table select entered successfully");
+    //  die();
+    } catch(Exception $e) {
+      print_r('Message: ' .$e->getMessage());
+
+      //return false;
+      print_r("Failed to select participants table successfully");
+    //  die();
+    }
+
+    // header("Location: participants.php");
+    // die();
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Show Participant</title>
+    <?php include("templates/header_assets.php"); ?>
+
+  </head>
+  <body>
+    <div class="container">
+      <br>
+      <h1>Show Participant</h1>
+      <br>
+
+      <div>
+        <div class="form-group">
+          <label for="">First Name</label>
+          <h5><?php print($participant["first_name"]) ?></h5>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Last Name</label>
+          <h5><?php print($participant["last_name"]) ?></h5>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Email-Address</label>
+          <h5><?php print($participant["email_address"]) ?></h5>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Phone-Number</label>
+          <h5><?php print($participant["phone_number"]) ?></h5>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="">Username</label>
+          <h5><?php print($participant["username"]) ?></h5>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="create_participant_biography">Biography</label>
+          <div>
+            <?php print($participant["biography"]) ?>
+          </div>
+        </div>
+        <br>
+      </div>
+
+      <br><br>
+
+      <h5><a href="?request=edit_participant&participant_id=<?php print($participant["id"]) ?>">Edit Participant</a></h5>
+    </div>
+
+    <?php include("templates/footer.php"); ?>
+
+  </body>
+</html>
+<?php
+} else if(($_GET["request"] == "show_participant") && ($_GET["participant_id"] == NULL)) {
+  header("Location: participants.php?request=index_of_participants");
+  die();
+?>
 <?php
 }
 ?>
